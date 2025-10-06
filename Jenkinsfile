@@ -3,11 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "hr-app-management"
-<<<<<<< HEAD
-        DOCKER_HUB_REPO = "Kavitha900/hr-app-management"  // your Docker Hub username
-=======
         DOCKER_HUB_REPO = "kavitha900/hr-app-management"  // lowercase username
->>>>>>> 4b4f130 (Fix Docker Hub repo lowercase, update Jenkinsfile)
         ECR_REPO = "259778757673.dkr.ecr.us-east-1.amazonaws.com/hr-app-management"
         AWS_REGION = "us-east-1"
     }
@@ -39,11 +35,9 @@ pipeline {
                         echo "Logging into Docker Hub..."
                         echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin
                         
-                        # Tagging
                         docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${DOCKER_HUB_REPO}:${BUILD_NUMBER}
                         docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${DOCKER_HUB_REPO}:latest
                         
-                        # Push
                         docker push ${DOCKER_HUB_REPO}:${BUILD_NUMBER}
                         docker push ${DOCKER_HUB_REPO}:latest
                     """
@@ -58,11 +52,9 @@ pipeline {
                         echo "Logging into AWS ECR..."
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
                         
-                        # Tagging
                         docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${ECR_REPO}:${BUILD_NUMBER}
                         docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${ECR_REPO}:latest
                         
-                        # Push
                         docker push ${ECR_REPO}:${BUILD_NUMBER}
                         docker push ${ECR_REPO}:latest
                     """
@@ -72,7 +64,7 @@ pipeline {
 
         stage('Cleanup') {
             steps {
-                echo "Cleaning up local images..."
+                echo "Cleaning up local Docker images..."
                 sh """
                     docker rmi -f ${IMAGE_NAME}:${BUILD_NUMBER} || true
                     docker rmi -f ${DOCKER_HUB_REPO}:${BUILD_NUMBER} || true
@@ -94,4 +86,3 @@ pipeline {
         }
     }
 }
-
