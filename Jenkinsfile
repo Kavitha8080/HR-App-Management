@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = "hr-app-management"
-        DOCKER_HUB_REPO = "Kavitha8080/hr-app-management"  // your Docker Hub username
+        DOCKER_HUB_REPO = "Kavitha900/hr-app-management"  // your Docker Hub username
         ECR_REPO = "259778757673.dkr.ecr.us-east-1.amazonaws.com/hr-app-management"
         AWS_REGION = "us-east-1"
     }
@@ -74,3 +74,4 @@ pipeline {
         }
     }
 }
+
